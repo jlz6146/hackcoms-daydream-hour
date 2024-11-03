@@ -40,6 +40,9 @@ def get_comments(conn, post_id):
     comments = conn.execute(f'SELECT * FROM comments WHERE associated_post={post_id} ORDER BY created DESC').fetchall()
     return comments
 
+def clear_db(conn):
+    conn.execute("DELETE FROM comments WHERE created < DATETIME('now', '-1 hours')")
+    conn.execute("DELETE FROM posts WHERE created < DATETIME('now', '-1 hours')")
 
 @app.route('/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
@@ -52,6 +55,7 @@ def post(post_id):
         if not user or not comment:
             flash('Need name or comment content')
         else:
+            clear_db(conn)
             conn.execute('INSERT INTO comments (user_alias, content, associated_post) VALUES (?, ?, ?)', (user, comment, post_id))
             conn.commit()
             comments = get_comments(conn, post_id)
@@ -64,7 +68,7 @@ def post(post_id):
 @app.route('/')
 def index():
     conn = get_db_connection()
-    conn.execute("DELETE FROM posts WHERE created < DATETIME('now', '-1 hours')")
+    clear_db(conn)
     posts = conn.execute('SELECT * FROM posts ORDER BY created DESC').fetchall()
     conn.close()
     return render_template("index.html", posts=posts)
@@ -72,6 +76,10 @@ def index():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+@app.route('/login')
+def login():
+    return render_template("login.html")
 
 def convert_to_binary(filename):
     with open(filename, 'rb') as f:
@@ -115,6 +123,7 @@ def upload():
             flash("Please ensure your post has content! ")
         else:
             conn = get_db_connection()
+            clear_db(conn)
             conn.execute('INSERT INTO posts (title, file_name, img, content, extension) VALUES (?, ?, ?, ?, ?)',
                             (title, filename, data, content, extension))
             conn.commit()
