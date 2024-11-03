@@ -41,8 +41,8 @@ def get_comments(conn, post_id):
     return comments
 
 def clear_db(conn):
-    conn.execute("DELETE FROM comments WHERE created < DATETIME('now', '-1 hours')")
-    conn.execute("DELETE FROM posts WHERE created < DATETIME('now', '-1 hours')")
+    conn.execute("DELETE FROM comments WHERE created < DATETIME('now', '-1 minutes')")
+    conn.execute("DELETE FROM posts WHERE created < DATETIME('now', '-1 minutes')")
 
 @app.route('/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):

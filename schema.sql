@@ -7,7 +7,9 @@ CREATE TABLE posts (
     file_name TEXT NOT NULL,
     img BLOB NOT NULL,
     content TEXT NOT NULL,
-    extension TEXT NOT NULL
+    extension TEXT NOT NULL,
+    likes INT DEFAULT 0,
+    user INT NOT NULL REFERENCES users(id)
 );
 
 DROP TABLE IF EXISTS comments;
@@ -18,5 +20,15 @@ CREATE TABLE comments (
     user_alias TEXT NOT NULL,
     content TEXT NOT NULL,
     associated_post INT NOT NULL REFERENCES posts(id) DEFAULT 0
+);
+
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL UNIQUE,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_alias TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
 );
 
