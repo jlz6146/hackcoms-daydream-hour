@@ -4,15 +4,19 @@ CREATE TABLE posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title TEXT NOT NULL,
-    filename VARCHAR(37),
+    file_name TEXT NOT NULL,
+    img BLOB NOT NULL,
     content TEXT NOT NULL,
-    associated_image INT NOT NULL REFERENCES pics(id) DEFAULT 0
+    extension TEXT NOT NULL
 );
+
+DROP TABLE IF EXISTS comments;
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_alias TEXT NOT NULL,
     content TEXT NOT NULL,
-    associated_image INT NOT NULL REFERENCES posts(id) DEFAULT 0
+    associated_post INT NOT NULL REFERENCES posts(id) DEFAULT 0
 );
+

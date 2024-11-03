@@ -2,10 +2,32 @@
 
 {% block content %}
     <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
+    <div id="image"><img class="postimg" src="data:image/{{ post['extension'] }};base64, {{ post['img'] }}"></div>
     <span class="badge badge-primary">{{ post['created'] }}</span>
     <p>{{ post['content'] }}</p>
-    
+
+    <form method="post">
+        <h1>Comment</h1>
+        <div class="form-group">
+            <label for="user_alias">Name</label>
+            <input type="text" name="user_alias"
+                   placeholder="" class="form-control"
+                   value="{{ request.form['title'] }}"></input>
+        </div>
+        <div class="form-group">
+            <label for="content">Comment Content</label>
+            <textarea name="content" placeholder="Post content"
+                      class="form-control">{{ request.form['content'] }}</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </div>
+    </form>
+    <h2>Comments</h2>
     {% for comment in comments %}
+        <h2>{{ comment['user_alias'] }} says...</h2>
+        <p> {{ comment['content'] }} </p>
+        <span class="badge badge-primary">{{ comment['created'] }}</span>
         <hr>
     {% endfor %}
 {% endblock %}

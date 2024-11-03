@@ -1,6 +1,12 @@
-h1 {
-    border: 2px #eee solid;
-    color: brown;
-    text-align: center;
-    padding: 10px;
+.idximg {
+    width: 400px;
+    height: auto;
+}
+
+.postimg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    height: auto;
 }

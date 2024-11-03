@@ -7,7 +7,7 @@
         <a href={{ post['id'] }}>
             <h2>{{ post['title'] }}</h2>
         </a>
-        <img src={{ post["filename"] }}>
+        <div id="image"><img class="idximg" src="data:image/{{ post['extension'] }};base64, {{ post['img'] }}" width="200" height="200"></div>
         <span class="badge badge-primary">{{ post['created'] }}</span>
         <hr>
     {% endfor %}
